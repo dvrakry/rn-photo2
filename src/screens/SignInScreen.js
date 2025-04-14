@@ -85,6 +85,10 @@ const SignInScreen = () => {
             title={'SIGNUP'}
             onPress={() => navigate(AuthRoutes.SIGN_UP)}
           />
+          <TextButton
+            title={'OPIC'}
+            onPress={() => navigate(AuthRoutes.OPIC)}
+          />
         </ScrollView>
       </View>
     </SafeInputView>

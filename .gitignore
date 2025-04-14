@@ -37,3 +37,4 @@ yarn-error.*
 
 #test
 src/screens/OpicTest.js
+assets/opic.png

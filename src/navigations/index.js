@@ -11,9 +11,6 @@ const Navigation = () => {
   );
 };
 
-Navigation.propTypes = {
-  //PropTypes
-};
 
 const styles = StyleSheet.create({
   container: {

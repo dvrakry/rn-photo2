@@ -6,9 +6,42 @@ import {
   View,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { GRAY, PRIMARY, WHITE } from '../colors';
+import { DANGER, GRAY, PRIMARY, WHITE } from '../colors';
 
-const Button = ({ title, onPress, disabled, isLoading, styles }) => {
+export const ButtonTypes = {
+  PRIMARY: 'PRIMARY',
+  DANGER: 'DANGER',
+  CANCEL: 'CANCEL',
+};
+
+const ButtonTypeColors = {
+  PRIMARY: {
+    DEFAUTL: PRIMARY.DEFAULT,
+    LIGHT: PRIMARY.LIGHT,
+    DARK: PRIMARY.DARK,
+  },
+  DANGER: {
+    DEFAUTL: DANGER.DEFAULT,
+    LIGHT: DANGER.LIGHT,
+    DARK: DANGER.DARK,
+  },
+  CANCEL: {
+    DEFAUTL: GRAY.DEFAULT,
+    LIGHT: GRAY.LIGHT,
+    DARK: GRAY.DARK,
+  },
+};
+
+const Button = ({
+  title,
+  onPress,
+  disabled,
+  isLoading,
+  styles,
+  buttonType = ButtonTypes.PRIMARY,
+}) => {
+  const Colors = ButtonTypeColors[buttonType];
+
   return (
     <View style={[defaultStyles.container, styles?.container]}>
       <Pressable
@@ -20,11 +53,11 @@ const Button = ({ title, onPress, disabled, isLoading, styles }) => {
             backgroundColor: (() => {
               switch (true) {
                 case disabled || isLoading:
-                  return PRIMARY.LIGHT;
+                  return Colors.LIGHT;
                 case pressed:
-                  return PRIMARY.DARK;
+                  return Colors.DARK;
                 default:
-                  return PRIMARY.DEFAULT;
+                  return Colors.DEFAULT;
               }
             })(),
           },
@@ -42,12 +75,12 @@ const Button = ({ title, onPress, disabled, isLoading, styles }) => {
 };
 
 Button.propTypes = {
-  //PropTypes
   title: PropTypes.string,
   onPress: PropTypes.func,
   disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
   styles: PropTypes.object,
+  buttonType: PropTypes.oneOf(Object.values(ButtonTypes)),
 };
 
 const defaultStyles = StyleSheet.create({

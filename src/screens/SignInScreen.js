@@ -23,6 +23,7 @@ import {
   initAuthForm,
 } from '../reducers/authFormReducer';
 import { getAuthErrorMessages, signIn } from '../api/auth';
+import { useUserState } from '../contexts/UserContext';
 
 const SignInScreen = () => {
   const passwordRef = useRef();
@@ -31,6 +32,7 @@ const SignInScreen = () => {
 
   const { top, bottom } = useSafeAreaInsets();
   const navigation = useNavigation();
+  const [, setUser] = useUserState();
 
   useFocusEffect(
     useCallback(() => {
@@ -54,12 +56,16 @@ const SignInScreen = () => {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
       try {
         const user = await signIn(form);
-        console.log('user', user);
+        setUser(user);
       } catch (e) {
         const message = getAuthErrorMessages(e.code);
-        Alert.alert('로그인 실패', message);
+        Alert.alert('로그인 실패', message, [
+          {
+            text: '확인',
+            onPress: () => dispatch({ type: AuthFormTypes.TOGGLE_LOADING }),
+          },
+        ]);
       }
-      dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
     }
   };
 
@@ -119,6 +125,10 @@ const SignInScreen = () => {
             title={'OPIC'}
             onPress={() => navigation.navigate(AuthRoutes.OPIC)}
           /> */}
+          <TextButton
+            title={'BANK'}
+            onPress={() => navigation.navigate(AuthRoutes.BANK)}
+          />
         </ScrollView>
       </View>
     </SafeInputView>

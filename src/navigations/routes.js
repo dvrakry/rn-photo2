@@ -3,4 +3,17 @@ export const AuthRoutes = {
   SIGN_UP: 'SignUp',
 
   OPIC: 'OPIC',
+  BANK: 'BANK',
+};
+
+export const MainRoutes = {
+  CONTENT_TAB: 'ContentTab',
+  SELECT_PHOTOS: 'SelectPhotos',
+};
+
+export const ContentRoutes = {
+  HOME: 'Home',
+  LIST: 'List',
+  MAP: 'Map',
+  PROFILE: 'Profile',
 };

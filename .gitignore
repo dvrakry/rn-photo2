@@ -38,6 +38,7 @@ yarn-error.*
 #test
 src/screens/OpicTest.js
 src/screens/BankScreen.js
+src/screens/BankScreen2.js
 assets/opic.png
 
 #firebase

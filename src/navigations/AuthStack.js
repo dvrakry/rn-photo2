@@ -3,6 +3,7 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import { AuthRoutes } from './routes';
 import { WHITE } from '../colors';
+//import BankScreen2 from '../screens/BankScreen2';
 // import OpicTest from '../screens/OpicTest';
 // import BankScreen from '../screens/BankScreen';
 

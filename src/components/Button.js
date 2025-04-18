@@ -15,21 +15,9 @@ export const ButtonTypes = {
 };
 
 const ButtonTypeColors = {
-  PRIMARY: {
-    DEFAUTL: PRIMARY.DEFAULT,
-    LIGHT: PRIMARY.LIGHT,
-    DARK: PRIMARY.DARK,
-  },
-  DANGER: {
-    DEFAUTL: DANGER.DEFAULT,
-    LIGHT: DANGER.LIGHT,
-    DARK: DANGER.DARK,
-  },
-  CANCEL: {
-    DEFAUTL: GRAY.DEFAULT,
-    LIGHT: GRAY.LIGHT,
-    DARK: GRAY.DARK,
-  },
+  PRIMARY,
+  DANGER,
+  CANCEL: GRAY,
 };
 
 const Button = ({

@@ -42,13 +42,13 @@ const DangerAlert = ({ visible, onClose, onConfirm, alertType }) => {
             <Button
               title={'취소'}
               onPress={onClose}
-              styles={{}}
+              styles={buttonStyles}
               buttonType={ButtonTypes.CANCEL}
             />
             <Button
               title={'확인'}
               onPress={onConfirm}
-              styles={{}}
+              styles={buttonStyles}
               buttonType={ButtonTypes.DANGER}
             />
           </View>
@@ -64,6 +64,17 @@ DangerAlert.propTypes = {
   onConfirm: PropTypes.func.isRequired,
   alertType: PropTypes.oneOf(Object.values(AlertTypes)),
 };
+
+const buttonStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 10,
+    marginTop: 10,
+  },
+  button: {
+    borderRadius: 8,
+  },
+});
 
 const styles = StyleSheet.create({
   background: {

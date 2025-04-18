@@ -120,15 +120,18 @@ const SignInScreen = () => {
             title={'SIGNUP'}
             onPress={() => navigation.navigate(AuthRoutes.SIGN_UP)}
           />
+
           {/* 오픽 */}
           {/* <TextButton
             title={'OPIC'}
             onPress={() => navigation.navigate(AuthRoutes.OPIC)}
           /> */}
-          <TextButton
+
+          {/* 은행 */}
+          {/* <TextButton
             title={'BANK'}
             onPress={() => navigation.navigate(AuthRoutes.BANK)}
-          />
+          /> */}
         </ScrollView>
       </View>
     </SafeInputView>

@@ -8,9 +8,6 @@ import {
   updateProfile,
 } from 'firebase/auth';
 
-const PHOTO_URL =
-  'https://firebasestorage.googleapis.com/v0/b/rn-photo2-d4c87.firebasestorage.app/o/profile.png?alt=media';
-
 export const getAuthErrorMessages = (errorCode) => {
   switch (errorCode) {
     case AuthErrorCodes.USER_DELETED:
@@ -32,6 +29,9 @@ export const signIn = async ({ email, password }) => {
   const { user } = await signInWithEmailAndPassword(getAuth(), email, password);
   return user;
 };
+
+const PHOTO_URL =
+  'https://firebasestorage.googleapis.com/v0/b/rn-photo2-d4c87.firebasestorage.app/o/profile.png?alt=media';
 
 export const signUp = async ({ email, password }) => {
   const { user } = await createUserWithEmailAndPassword(
@@ -56,8 +56,9 @@ export const signOut = async () => {
   await signOutFirebase(getAuth());
 };
 
-const updateUserInfo = async (userInfo) => {
+export const updateUserInfo = async (userInfo) => {
   try {
+    console.log('userInfo', userInfo);
     await updateProfile(getAuth().currentUser, userInfo);
   } catch (e) {
     throw new Error('사용자 정보 수정에 실패했습니다.');

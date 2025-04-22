@@ -1,7 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {
   Alert,
   Keyboard,
+  Platform,
   Pressable,
   StyleSheet,
   TextInput,
@@ -15,49 +16,72 @@ import HeaderRight from '../components/HeaderRight';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { updateUserInfo } from '../api/auth';
 import SafeInputView from '../components/SafeInputView';
+import { MainRoutes } from '../navigations/routes';
+import { getLocalUri } from '../components/ImagePicker';
 
 const UpdateProfileScreen = () => {
   const navigation = useNavigation();
+  const { params } = useRoute();
+
   const [user, setUser] = useUserState();
-  const [displayName, setDisplayName] = useState(user.displayName);
+  const [photo, setPhoto] = useState({ uri: user.photoURL });
+  const [displayName, setDisplayName] = useState(user.displayName || '');
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  console.log('displayName', displayName);
+
+  useEffect(() => {
+    if (params) {
+      const { selectedPhotos } = params;
+      if (selectedPhotos?.length) {
+        console.log('selectedPhotos[0]', selectedPhotos[0]);
+        setPhoto(selectedPhotos[0]);
+      }
+    }
+  }, [params]);
 
   const onSubmit = useCallback(async () => {
     Keyboard.dismiss();
     if (!disabled) {
       setIsLoading(true);
       try {
-        const userInfo = { displayName };
-        console.log('userInfo', userInfo);
-        await updateUserInfo(userInfo);
-        setUser((prev) => ({ ...prev, ...userInfo }));
+        const localUri = Platform.select({
+          ios: await getLocalUri(photo.id),
+          android: photo.uri,
+        });
 
-        navigation.goBack();
+        console.log('localUri', localUri);
+        setIsLoading(false);
+        // const userInfo = { displayName };
+        // await updateUserInfo(userInfo);
+        // setUser((prev) => ({ ...prev, ...userInfo }));
+
+        // navigation.goBack();
       } catch (e) {
         Alert.alert('사용자 수정 실패', e.message);
         setIsLoading(false);
       }
     }
-  }, [disabled, displayName, navigation, setUser]);
+  }, [disabled, displayName, navigation, setUser, photo.id, photo.uri]);
 
   useEffect(() => {
     setDisabled(!displayName || isLoading);
   }, [displayName, isLoading]);
-
+  ``;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <HeaderRight disabled={disabled} onPress={onSubmit} />,
     });
-  }, [navigation, disabled]);
+  }, [navigation, disabled, onSubmit]);
 
   return (
     <SafeInputView>
       <View style={styles.container}>
         <View>
-          <FastImage source={{ uri: user.photoURL }} style={styles.photo} />
-          <Pressable onPress={() => {}} style={styles.imageButton}>
+          <FastImage source={{ uri: photo.uri }} style={styles.photo} />
+          <Pressable
+            onPress={() => navigation.navigate(MainRoutes.IMAGE_PICKER)}
+            style={styles.imageButton}
+          >
             <MaterialCommunityIcons name="image" size={20} color={WHITE} />
           </Pressable>
         </View>

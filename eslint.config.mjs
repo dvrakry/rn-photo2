@@ -20,6 +20,9 @@ export default defineConfig([
   {
     rules: {
       'no-console': 'warn',
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'no-unused-vars': 'warn', // <-- 여기서 'warn'으로 설정
     },
   },
 ]);

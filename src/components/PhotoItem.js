@@ -1,10 +1,10 @@
 import {
-  Image,
   Platform,
   Pressable,
   StyleSheet,
   useWindowDimensions,
 } from 'react-native';
+import { Image } from 'expo-image';
 import PropTypes from 'prop-types';
 import { BlurView } from 'expo-blur';
 import { PRIMARY } from '../colors';

@@ -18,6 +18,7 @@ import { updateUserInfo } from '../api/auth';
 import SafeInputView from '../components/SafeInputView';
 import { MainRoutes } from '../navigations/routes';
 import { getLocalUri } from '../components/ImagePicker';
+import { uploadPhoto } from '../api/storage';
 
 const UpdateProfileScreen = () => {
   const navigation = useNavigation();
@@ -33,7 +34,6 @@ const UpdateProfileScreen = () => {
     if (params) {
       const { selectedPhotos } = params;
       if (selectedPhotos?.length) {
-        console.log('selectedPhotos[0]', selectedPhotos[0]);
         setPhoto(selectedPhotos[0]);
       }
     }
@@ -44,18 +44,21 @@ const UpdateProfileScreen = () => {
     if (!disabled) {
       setIsLoading(true);
       try {
-        const localUri = Platform.select({
-          ios: await getLocalUri(photo.id),
-          android: photo.uri,
-        });
+        const localUri = photo.id
+          ? Platform.select({
+              ios: await getLocalUri(photo.id),
+              android: photo.uri,
+            })
+          : photo.uri;
 
-        console.log('localUri', localUri);
-        setIsLoading(false);
-        // const userInfo = { displayName };
-        // await updateUserInfo(userInfo);
-        // setUser((prev) => ({ ...prev, ...userInfo }));
+        const photoURL = await uploadPhoto(localUri);
 
-        // navigation.goBack();
+        const userInfo = { displayName, photoURL };
+
+        await updateUserInfo(userInfo);
+        setUser((prev) => ({ ...prev, ...userInfo }));
+
+        navigation.popToTop();
       } catch (e) {
         Alert.alert('사용자 수정 실패', e.message);
         setIsLoading(false);
@@ -66,7 +69,7 @@ const UpdateProfileScreen = () => {
   useEffect(() => {
     setDisabled(!displayName || isLoading);
   }, [displayName, isLoading]);
-  ``;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <HeaderRight disabled={disabled} onPress={onSubmit} />,

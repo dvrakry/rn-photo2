@@ -77,7 +77,7 @@ const SelectPhotosScreen = () => {
           <ImageSwiper photos={photos} />
         ) : (
           <Pressable
-            onPressOut={() =>
+            onPress={() =>
               navigation.navigate(MainRoutes.IMAGE_PICKER, { maxCount: 4 })
             }
             style={styles.photoButton}

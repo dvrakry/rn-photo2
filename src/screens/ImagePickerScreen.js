@@ -18,7 +18,7 @@ const ImagePickerScreen = () => {
 
   const onConfirm = useCallback(() => {
     const prevScreenName = stateRoutes[stateRoutes.length - 2].name;
-    navigation.navigate(prevScreenName, { selectedPhotos });
+    navigation.popTo(prevScreenName, { selectedPhotos });
   }, [navigation, selectedPhotos, stateRoutes]);
 
   useLayoutEffect(() => {

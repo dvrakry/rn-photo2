@@ -1,5 +1,4 @@
 import {
-  Button,
   Image,
   Pressable,
   StyleSheet,
@@ -9,7 +8,7 @@ import {
 } from 'react-native';
 import { WHITE } from '../colors';
 import { useNavigation } from '@react-navigation/native';
-import { ContentRoutes, MainRoutes } from '../navigations/routes';
+import { ContentRoutes } from '../navigations/routes';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {

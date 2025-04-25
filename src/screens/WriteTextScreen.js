@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import {
+  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -10,6 +11,9 @@ import {
 import HeaderRight from '../components/HeaderRight';
 import FastImage from '../components/FastImage';
 import { GRAY } from '../colors';
+import LocationSearch from '../components/LocationSearch';
+import { uploadPhoto } from '../api/storage';
+import { createPost } from '../api/posts';
 
 const MAX_TEXT_LENGTH = 60;
 
@@ -20,6 +24,7 @@ const WriteTextScreen = () => {
 
   const [photoUris, setPhotoUris] = useState([]);
   const [text, setText] = useState('');
+  const [location, setLocation] = useState('');
 
   const [disabled, setDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,12 +37,24 @@ const WriteTextScreen = () => {
     setPhotoUris(params?.photoUris ?? []);
   }, [params?.photoUris]);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, []);
+    try {
+      const photos = await Promise.all(
+        photoUris.map((uri) => uploadPhoto(uri))
+      );
+
+      await createPost({ photos, location, text });
+      navigation.goBack();
+    } catch (e) {
+      Alert.alert(' 글 작성 실패', e.message, [
+        {
+          text: '확인',
+          onPress: () => setIsLoading(false),
+        },
+      ]);
+    }
+  }, [location, navigation, photoUris, text]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -57,6 +74,12 @@ const WriteTextScreen = () => {
           />
         ))}
       </View>
+      {/* Google Map */}
+      <LocationSearch
+        onPress={({ description }) => setLocation(description)}
+        isLoading={isLoading}
+        isSelected={!!location}
+      />
       {/* Text Input */}
       <View>
         <TextInput
